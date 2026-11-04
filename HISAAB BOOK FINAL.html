@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HISAAB BOOK</title>
+<style>
+:root{--bg:#f3f5f8;--card:#fff;--tx:#14213d;--mu:#6b7691;--pr:#14284b;--g:#16875a;--r:#c53030;--bd:#e3e7ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1626;--card:#16223a;--tx:#e8edf7;--mu:#97a3bd;--pr:#5b86d6;--g:#4cc38a;--r:#f27070;--bd:#27344f}}
+:root[data-theme="dark"]{--bg:#0e1626;--card:#16223a;--tx:#e8edf7;--mu:#97a3bd;--pr:#5b86d6;--g:#4cc38a;--r:#f27070;--bd:#27344f}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px/1.45 "Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif;padding-bottom:70px}
+header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--pr);color:#fff;display:grid;place-items:center;font-weight:700;font-size:19px}
+header b{letter-spacing:.5px}header small{display:block;color:var(--mu);font-size:11px}
+main{max-width:820px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(20,40,75,.06)}
+.hero{background:var(--pr);color:#fff;border:0}.hero .big{font-size:32px;font-weight:700}.hero small{opacity:.8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid .card{margin:0}
+.k{color:var(--mu);font-size:12px}.v{font-size:18px;font-weight:600}
+.in{color:var(--g)}.out{color:var(--r)}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:6}
+nav button{flex:1;border:0;background:none;color:var(--mu);padding:10px 2px;font:inherit;font-size:12px}nav button.on{color:var(--pr);font-weight:700;box-shadow:inset 0 2px var(--pr)}
+.fab{position:fixed;right:16px;bottom:calc(74px + env(safe-area-inset-bottom,0px));background:var(--g);color:#fff;border:0;border-radius:28px;padding:13px 18px;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,.25);z-index:7;font-size:15px}
+.row{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--bd)}.row:last-child{border:0}
+.row .l{min-width:0}.row .l div{overflow:hidden;text-overflow:ellipsis}.row .s{color:var(--mu);font-size:12px}.row .rt{text-align:right;white-space:nowrap}
+input,select,button.b,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px;width:100%;margin:4px 0 8px}
+button.b{background:var(--pr);color:#fff;border:0;font-weight:600;cursor:pointer}button.b.ghost{background:none;color:var(--pr);border:1px solid var(--bd)}button.b.del{background:var(--r)}
+.seg{display:flex;gap:6px;margin-bottom:6px}.seg button{flex:1;padding:9px 2px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:10px;font:inherit;font-size:13px}.seg button.on{background:var(--pr);color:#fff}
+.bar{height:8px;border-radius:5px;background:var(--bd);overflow:hidden}.bar i{display:block;height:100%;background:var(--g)}
+.warn{background:#fff3cd;color:#664d03;padding:8px 10px;border-radius:10px;font-size:13px;margin-bottom:8px}
+dialog{border:0;border-radius:16px;background:var(--card);color:var(--tx);width:min(94vw,440px);padding:16px}dialog::backdrop{background:rgba(0,0,0,.45)}
+.tag{font-size:10px;background:#fde68a;color:#78350f;border-radius:6px;padding:1px 5px;margin-left:4px}
+.cols{display:flex;align-items:flex-end;gap:6px;height:90px}.cols div{flex:1;display:flex;gap:2px;align-items:flex-end;height:100%}.cols i{flex:1;border-radius:3px 3px 0 0;min-height:2px}
+.lbl{display:flex;gap:6px;font-size:11px;color:var(--mu)}.lbl span{flex:1;text-align:center}
+</style></head><body>
+<header><div class="logo">₹</div><div><b>HISAAB BOOK</b><small id="tag"></small></div></header>
+<main id="m"></main>
+<button class="fab" id="fab"></button>
+<nav id="nav"></nav>
+<dialog id="dlg"></dialog>
+<script>
+const T={en:{tag:"Every Rupee. Every Transaction. Every Detail.",dash:"Home",tx:"Entries",acc:"Accounts",bud:"Budgets",rep:"Reports",set:"Settings",add:"+ Add transaction",bal:"Final available balance",open:"Opening balance",inc:"Received",exp:"Spent",net:"Net cash flow",mi:"This month income",me:"This month spent",ms:"This month saved",recent:"Recent transactions",none:"No transactions yet. Add one or load sample data in Settings.",in:"Money in",out:"Money out",xfer:"Transfer",adj:"Adjust",amt:"Amount (₹)",desc:"Description",cat:"Category",acct:"Account",to:"To account",date:"Date",time:"Time",meth:"Payment method",note:"Notes",save:"Save",cancel:"Cancel",del:"Delete",edit:"Edit",dup:"Duplicate",neg:"This will make the balance negative.",negok:"Allow negative balances",dupw:"A matching entry exists for this date and amount. Saving will add a duplicate.",why:"Reason (required)",addacc:"Add account",aname:"Name",abal:"Opening balance (₹)",limit:"Monthly limit (₹)",spent:"Spent",left:"Left",lang:"Language",theme:"Theme",demo:"Load sample data",rmdemo:"Remove sample data",exp1:"Export CSV",exp2:"Backup (JSON)",imp:"Import backup",audit:"Audit log",reset:"Delete all data",search:"Search description, amount, category",all:"All",run:"Balance",byCat:"Spending by category",trend:"Last 6 months",from:"From",tod:"To",stmt:"Statement",closing:"Closing balance",sure:"Delete all data on this device?",demo_l:"Sample"},
+hi:{tag:"हर रुपया। हर लेन-देन। हर विवरण।",dash:"होम",tx:"लेन-देन",acc:"खाते",bud:"बजट",rep:"रिपोर्ट",set:"सेटिंग्स",add:"+ लेन-देन जोड़ें",bal:"अंतिम उपलब्ध शेष",open:"प्रारंभिक शेष",inc:"प्राप्त",exp:"खर्च",net:"शुद्ध नकदी प्रवाह",mi:"इस माह की आय",me:"इस माह का खर्च",ms:"इस माह की बचत",recent:"हाल के लेन-देन",none:"अभी कोई लेन-देन नहीं। जोड़ें या सेटिंग्स में सैंपल डेटा लोड करें।",in:"प्राप्त",out:"खर्च",xfer:"ट्रांसफर",adj:"समायोजन",amt:"राशि (₹)",desc:"विवरण",cat:"श्रेणी",acct:"खाता",to:"प्राप्तकर्ता खाता",date:"तारीख",time:"समय",meth:"भुगतान तरीका",note:"टिप्पणी",save:"सहेजें",cancel:"रद्द करें",del:"हटाएं",edit:"संपादित करें",dup:"प्रतिलिपि",neg:"इससे शेष ऋणात्मक हो जाएगा।",negok:"ऋणात्मक शेष की अनुमति दें",dupw:"इस तारीख और राशि की समान प्रविष्टि मौजूद है। सहेजने पर दोहराव होगा।",why:"कारण (आवश्यक)",addacc:"खाता जोड़ें",aname:"नाम",abal:"प्रारंभिक शेष (₹)",limit:"मासिक सीमा (₹)",spent:"खर्च",left:"शेष",lang:"भाषा",theme:"थीम",demo:"सैंपल डेटा लोड करें",rmdemo:"सैंपल डेटा हटाएं",exp1:"CSV निर्यात",exp2:"बैकअप (JSON)",imp:"बैकअप आयात करें",audit:"ऑडिट लॉग",reset:"सारा डेटा हटाएं",search:"विवरण, राशि, श्रेणी खोजें",all:"सभी",run:"शेष",byCat:"श्रेणी अनुसार खर्च",trend:"पिछले 6 माह",from:"से",tod:"तक",stmt:"विवरण",closing:"अंतिम शेष",sure:"इस डिवाइस का सारा डेटा हटाएं?",demo_l:"सैंपल"}};
+const CATX=["Food & Canteen","Groceries","Transportation","Education","Stationery","Shopping","Medical","Entertainment","Mobile Recharge","Bills","Subscriptions","Travel","Household","Investment","Other Expenses"];
+const CATI=["Pocket Money","Salary","Business Income","Freelancing","Gifts","Refunds","Interest","Dividends","Other Income"];
+const METH=["Cash","UPI","Card","Bank transfer","Other"];
+let S;const K="hisaab_v1";
+function load(){try{S=JSON.parse(localStorage.getItem(K))}catch(e){S=null}
+ if(!S)S={lang:"en",theme:"auto",neg:false,accs:[{id:"a1",name:"Cash Wallet",open:0},{id:"a2",name:"Bank Account",open:0}],tx:[],bud:{},audit:[]}}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+const t=k=>T[S.lang][k]||k,$=s=>document.querySelector(s),uid=()=>"T"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const inr=p=>{const n=Math.abs(p)/100;return(p<0?"-":"")+"₹"+n.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})};
+const toP=s=>Math.round(parseFloat(String(s).replace(/,/g,""))*100)||0; // integer paise
+const esc=s=>String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const live=()=>S.tx.filter(x=>!x.del).sort((a,b)=>(a.date+a.time+a.ts).localeCompare(b.date+b.time+b.ts));
+// delta of tx on account
+function eff(x,a){if(x.type==="in"||x.type==="adj")return x.acc===a?x.amt:0;if(x.type==="out")return x.acc===a?-x.amt:0;if(x.type==="xfer")return x.acc===a?-x.amt:x.to===a?x.amt:0;return 0}
+const accBal=(a,list=live())=>S.accs.find(x=>x.id===a).open+list.reduce((s,x)=>s+eff(x,a),0);
+function totals(list){let i=0,o=0,ad=0,tr=0;list.forEach(x=>{if(x.type==="in")i+=x.amt;else if(x.type==="out")o+=x.amt;else if(x.type==="xfer")tr+=x.amt;else ad+=x.amt});return{i,o,ad,tr}}
+const openAll=()=>S.accs.reduce((s,a)=>s+a.open,0);
+const finalBal=()=>{const q=totals(live());return openAll()+q.i-q.o+q.ad}; // transfers net zero
+const today=()=>new Date().toISOString().slice(0,10),ym=d=>d.slice(0,7);
+let view="dash",filt={q:"",type:"all",acc:"all"},rep={from:"",to:""};
+function render(){document.documentElement.dataset.theme=S.theme==="auto"?"":S.theme;$("#tag").textContent=t("tag");$("#fab").textContent=t("add");
+ const N=[["dash","dash"],["tx","tx"],["acc","acc"],["bud","bud"],["rep","rep"],["set","set"]];
+ $("#nav").innerHTML=N.map(([v,k])=>`<button class="${view===v?"on":""}" data-v="${v}">${t(k)}</button>`).join("");
+ $("#nav").onclick=e=>{if(e.target.dataset.v){view=e.target.dataset.v;render();scrollTo(0,0)}};
+ $("#fab").onclick=()=>form();
+ $("#m").innerHTML=({dash,tx:txv,acc:accv,bud:budv,rep:repv,set:setv})[view]()}
+const row=(x,run)=>{const a=S.accs.find(z=>z.id===x.acc),b=S.accs.find(z=>z.id===x.to);const sg=x.type==="in"?"in":x.type==="out"?"out":x.amt<0?"out":"";const pre=x.type==="in"?"+":x.type==="out"?"-":"";
+ return `<div class="row" data-id="${x.id}" style="cursor:pointer"><div class="l"><div>${esc(x.desc)||t(x.type)}${x.demo?`<span class="tag">${t("demo_l")}</span>`:""}</div><div class="s">${x.date} · ${esc(x.cat||t(x.type))} · ${esc(a?.name)}${b?" → "+esc(b.name):""}</div></div><div class="rt"><div class="${sg}">${pre}${inr(x.amt)}</div>${run!=null?`<div class="s">${inr(run)}</div>`:""}</div></div>`};
+function dash(){const L=live(),q=totals(L),m=ym(today()),M=totals(L.filter(x=>ym(x.date)===m));
+ const mon=[];for(let i=5;i>=0;i--){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);const k=d.toISOString().slice(0,7),z=totals(L.filter(x=>ym(x.date)===k));mon.push({k:k.slice(5),i:z.i,o:z.o})}
+ const mx=Math.max(1,...mon.flatMap(z=>[z.i,z.o])),fb=finalBal();
+ const cats={};L.filter(x=>x.type==="out"&&ym(x.date)===m).forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.amt);const ce=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+ return `<div class="card hero"><small>${t("bal")}</small><div class="big">${inr(fb)}</div><small>${t("open")}: ${inr(openAll())}</small></div>
+ <div class="grid"><div class="card"><div class="k">${t("inc")} (+)</div><div class="v in">${inr(q.i)}</div></div><div class="card"><div class="k">${t("exp")} (-)</div><div class="v out">${inr(q.o)}</div></div>
+ <div class="card"><div class="k">${t("xfer")}</div><div class="v">${inr(q.tr)}</div></div><div class="card"><div class="k">${t("net")}</div><div class="v ${q.i-q.o<0?"out":"in"}">${inr(q.i-q.o)}</div></div>
+ <div class="card"><div class="k">${t("mi")}</div><div class="v in">${inr(M.i)}</div></div><div class="card"><div class="k">${t("me")}</div><div class="v out">${inr(M.o)}</div></div></div>
+ <div class="card" style="margin-top:12px"><div class="k">${t("ms")}</div><div class="v ${M.i-M.o<0?"out":"in"}">${inr(M.i-M.o)}</div></div>
+ <div class="card"><b>${t("trend")}</b><div class="cols" style="margin-top:8px">${mon.map(z=>`<div><i style="background:var(--g);height:${z.i/mx*100}%"></i><i style="background:var(--r);height:${z.o/mx*100}%"></i></div>`).join("")}</div><div class="lbl">${mon.map(z=>`<span>${z.k}</span>`).join("")}</div></div>
+ <div class="card"><b>${t("byCat")}</b>${ce.length?ce.map(([c,v])=>`<div class="row"><span>${esc(c)}</span><span>${inr(v)}</span></div>`).join(""):""}</div>
+ <div class="card"><b>${t("recent")}</b>${L.length?L.slice(-6).reverse().map(x=>row(x)).join(""):`<p class="k">${t("none")}</p>`}</div>`}
+function txv(){const L=live();const run={};let r={};S.accs.forEach(a=>r[a.id]=a.open);let tot=openAll();L.forEach(x=>{tot+=S.accs.reduce((s,a)=>s+eff(x,a.id),0);run[x.id]=tot});
+ let F=L.filter(x=>(filt.type==="all"||x.type===filt.type)&&(filt.acc==="all"||x.acc===filt.acc||x.to===filt.acc)&&(!filt.q||(x.desc+x.cat+(x.amt/100)+x.date).toLowerCase().includes(filt.q.toLowerCase()))).reverse();
+ return `<div class="card"><input id="q" placeholder="${t("search")}" value="${esc(filt.q)}"><div class="seg">${["all","in","out","xfer","adj"].map(k=>`<button data-t="${k}" class="${filt.type===k?"on":""}">${k==="all"?t("all"):t(k)}</button>`).join("")}</div>
+ <select id="fa"><option value="all">${t("all")} ${t("acc")}</option>${S.accs.map(a=>`<option value="${a.id}" ${filt.acc===a.id?"selected":""}>${esc(a.name)}</option>`).join("")}</select></div>
+ <div class="card">${F.length?F.map(x=>row(x,run[x.id])).join(""):`<p class="k">${t("none")}</p>`}</div>`}
+function accv(){return S.accs.map(a=>`<div class="card"><div class="row"><b>${esc(a.name)}</b><b class="${accBal(a.id)<0?"out":""}">${inr(accBal(a.id))}</b></div><div class="k">${t("open")}: ${inr(a.open)}</div></div>`).join("")+
+ `<div class="card"><b>${t("addacc")}</b><input id="an" placeholder="${t("aname")}"><input id="ab" inputmode="decimal" placeholder="${t("abal")}"><button class="b" id="aadd">${t("save")}</button></div>`}
+function budv(){const m=ym(today()),L=live().filter(x=>x.type==="out"&&ym(x.date)===m);
+ return CATX.map(c=>{const sp=L.filter(x=>x.cat===c).reduce((s,x)=>s+x.amt,0),lim=S.bud[c]||0,pc=lim?Math.round(sp/lim*100):0;
+ return `<div class="card"><div class="row" style="border:0;padding:0"><b>${c}</b><span>${t("spent")} ${inr(sp)}</span></div><div class="bar"><i style="width:${Math.min(100,pc)}%;background:${pc>100?"var(--r)":"var(--g)"}"></i></div>
+ <div class="row" style="border:0;padding:6px 0 0"><span class="k">${lim?`${pc}% · ${t("left")} ${inr(lim-sp)}`:""}</span><input data-b="${esc(c)}" inputmode="decimal" placeholder="${t("limit")}" value="${lim?lim/100:""}" style="width:150px;margin:0"></div></div>`}).join("")}
+function repv(){const L=live(),f=rep.from||(L[0]?.date||today()),to=rep.to||today();
+ const op=S.accs.reduce((s,a)=>s+a.open,0)+L.filter(x=>x.date<f).reduce((s,x)=>s+(x.type==="out"?-x.amt:x.type==="xfer"?0:x.amt),0);
+ const P=L.filter(x=>x.date>=f&&x.date<=to),q=totals(P),cl=op+q.i-q.o+q.ad;
+ return `<div class="card"><div class="grid"><div><div class="k">${t("from")}</div><input type="date" id="rf" value="${f}"></div><div><div class="k">${t("tod")}</div><input type="date" id="rt" value="${to}"></div></div>
+ <div class="row"><span>${t("open")}</span><b>${inr(op)}</b></div><div class="row"><span>${t("inc")}</span><b class="in">+${inr(q.i)}</b></div><div class="row"><span>${t("exp")}</span><b class="out">-${inr(q.o)}</b></div>${q.ad?`<div class="row"><span>${t("adj")}</span><b>${inr(q.ad)}</b></div>`:""}<div class="row"><span>${t("closing")}</span><b>${inr(cl)}</b></div>
+ <button class="b" id="csv">${t("exp1")}</button><button class="b ghost" onclick="print()">Print</button></div><div class="card"><b>${t("stmt")}</b>${P.map(x=>row(x)).join("")}</div>`}
+function setv(){return `<div class="card"><div class="k">${t("lang")}</div><div class="seg"><button data-l="en" class="${S.lang==="en"?"on":""}">English</button><button data-l="hi" class="${S.lang==="hi"?"on":""}">हिन्दी</button></div>
+ <div class="k">${t("theme")}</div><div class="seg">${["auto","light","dark"].map(k=>`<button data-th="${k}" class="${S.theme===k?"on":""}">${k}</button>`).join("")}</div>
+ <label><input type="checkbox" id="neg" ${S.neg?"checked":""} style="width:auto"> ${t("negok")}</label></div>
+ <div class="card"><button class="b" id="demo">${t("demo")}</button><button class="b ghost" id="rmdemo">${t("rmdemo")}</button><button class="b ghost" id="bk">${t("exp2")}</button>
+ <input type="file" id="imp" accept=".json"><button class="b del" id="rst">${t("reset")}</button></div>
+ <div class="card"><b>${t("audit")}</b>${S.audit.slice(-25).reverse().map(a=>`<div class="row"><span class="s">${a.at.slice(0,16).replace("T"," ")} · ${a.op} ${a.id}${a.why?" · "+esc(a.why):""}</span></div>`).join("")}</div>`}
+function logA(op,id,why){S.audit.push({at:new Date().toISOString(),op,id,why:why||""})}
+function form(x,dupe){const d=$("#dlg");const e=x&&!dupe;let ty=x?.type||"out";
+ const draw=()=>{const cats=ty==="in"?CATI:CATX;d.innerHTML=`<div class="seg">${["in","out","xfer","adj"].map(k=>`<button data-ty="${k}" class="${ty===k?"on":""}">${t(k)}</button>`).join("")}</div><div id="w"></div>
+ <input id="fa1" inputmode="decimal" placeholder="${t("amt")}" value="${x?x.amt/100:""}">${ty==="adj"?`<div class="k">+ / − (e.g. -50)</div>`:""}
+ <input id="fd" placeholder="${t("desc")}" value="${esc(x?.desc)}">
+ ${ty==="in"||ty==="out"?`<select id="fc">${cats.map(c=>`<option ${x?.cat===c?"selected":""}>${c}</option>`)}</select><select id="fm">${METH.map(c=>`<option ${x?.meth===c?"selected":""}>${c}</option>`)}</select>`:""}
+ <select id="fac">${S.accs.map(a=>`<option value="${a.id}" ${x?.acc===a.id?"selected":""}>${esc(a.name)}</option>`)}</select>
+ ${ty==="xfer"?`<select id="fto">${S.accs.map(a=>`<option value="${a.id}" ${x?.to===a.id?"selected":""}>${t("to")}: ${esc(a.name)}</option>`)}</select>`:""}
+ ${ty==="adj"?`<input id="fr" placeholder="${t("why")}">`:""}
+ <input type="date" id="fdt" value="${x?.date||today()}"><input type="time" id="ftm" value="${x?.time||new Date().toTimeString().slice(0,5)}"><input id="fn" placeholder="${t("note")}" value="${esc(x?.note)}">
+ <button class="b" id="fs">${t("save")}</button>${e?`<button class="b del" id="fx">${t("del")}</button><button class="b ghost" id="fdu">${t("dup")}</button>`:""}<button class="b ghost" id="fc2">${t("cancel")}</button>`;
+ d.querySelectorAll("[data-ty]").forEach(b=>b.onclick=()=>{ty=b.dataset.ty;draw()});$("#fc2").onclick=()=>d.close();
+ if(e){$("#fx").onclick=()=>{const w=prompt(t("why"));if(!w)return;x.del=true;logA("delete",x.id,w);save();d.close();render()};$("#fdu").onclick=()=>{d.close();form(x,true)}}
+ $("#fs").onclick=()=>{const raw=$("#fa1").value.trim();let amt=toP(raw);if(!amt)return $("#fa1").focus();if(ty!=="adj")amt=Math.abs(amt);
+  const n={id:e?x.id:uid(),type:ty,amt,desc:$("#fd").value.trim(),cat:$("#fc")?.value||"",meth:$("#fm")?.value||"",acc:$("#fac").value,to:$("#fto")?.value||"",date:$("#fdt").value,time:$("#ftm").value,note:$("#fn").value,ts:e?x.ts:new Date().toISOString(),demo:false};
+  if(ty==="xfer"&&n.to===n.acc)return alert("Choose different accounts");
+  if(ty==="adj"){n.cat="Adjustment";n.desc=n.desc||"Balance adjustment";const r=$("#fr").value.trim();if(!r)return $("#fr").focus();n.note=r}
+  const others=live().filter(z=>z.id!==n.id);
+  if(!S.neg){const bad=S.accs.find(a=>accBal(a.id,[...others,n])<0&&accBal(a.id,[...others,n])<accBal(a.id,others));if(bad&&!confirm(t("neg")+" ("+bad.name+")"))return}
+  if(!e&&others.some(z=>z.date===n.date&&z.amt===n.amt&&z.type===n.type&&z.acc===n.acc&&z.desc===n.desc)&&!confirm(t("dupw")))return;
+  if(e){logA("edit",n.id,JSON.stringify({was:{amt:x.amt,desc:x.desc,date:x.date}}));Object.assign(x,n)}else{S.tx.push(n);logA("add",n.id)}
+  save();d.close();render()}};
+ draw();d.showModal()}
+document.addEventListener("click",e=>{const r=e.target.closest("[data-id]");if(r&&view!=="set"){const x=S.tx.find(z=>z.id===r.dataset.id);if(x)form(x)}
+ const g=(a)=>e.target.dataset[a];
+ if(g("t")){filt.type=g("t");render()}if(g("l")){S.lang=g("l");save();render()}if(g("th")){S.theme=g("th");save();render()}
+ const id=e.target.id;
+ if(id==="aadd"){const n=$("#an").value.trim();if(n){S.accs.push({id:"a"+Date.now(),name:n,open:toP($("#ab").value)});save();render()}}
+ if(id==="csv"){const f=$("#rf").value,o=$("#rt").value;const rows=[["ID","Date","Time","Type","Description","Category","Amount","Account","Method","Note"]];live().filter(x=>x.date>=f&&x.date<=o).forEach(x=>rows.push([x.id,x.date,x.time,x.type,x.desc,x.cat,x.amt/100,S.accs.find(a=>a.id===x.acc)?.name,x.meth,x.note]));dl("hisaab.csv",rows.map(r=>r.map(c=>'"'+String(c??"").replace(/"/g,'""')+'"').join(",")).join("\n"),"text/csv")}
+ if(id==="bk")dl("hisaab-backup.json",JSON.stringify(S),"application/json");
+ if(id==="rst"&&confirm(t("sure"))){localStorage.removeItem(K);load();render()}
+ if(id==="rmdemo"){S.tx=S.tx.filter(x=>!x.demo);save();render()}
+ if(id==="demo"){if(S.tx.some(x=>x.demo))return;const d=n=>{const z=new Date();z.setDate(z.getDate()-n);return z.toISOString().slice(0,10)};const A=S.accs[0].id,B=S.accs[1].id;
+  const D=[["in","Pocket money","Pocket Money",100000,A,d(6)],["out","Canteen","Food & Canteen",11000,A,d(5)],["out","Auto fare","Transportation",10000,A,d(4)],["in","Gift received","Gifts",50000,A,d(3)],["out","Shopping","Shopping",40000,A,d(2)],["xfer","Cash to bank","",30000,A,d(1),B]];
+  D.forEach(z=>S.tx.push({id:uid(),type:z[0],desc:z[1],cat:z[2],amt:z[3],acc:z[4],to:z[6]||"",date:z[5],time:"12:00",meth:"Cash",note:"",ts:new Date().toISOString(),demo:true}));save();render()}});
+document.addEventListener("input",e=>{const i=e.target;if(i.id==="q"){filt.q=i.value;const p=i.selectionStart;render();const q=$("#q");q.focus();q.setSelectionRange(p,p)}
+ if(i.dataset.b){S.bud[i.dataset.b]=toP(i.value);save()}});
+document.addEventListener("change",e=>{const i=e.target;if(i.id==="fa"){filt.acc=i.value;render()}if(i.id==="neg"){S.neg=i.checked;save()}
+ if(i.id==="rf"||i.id==="rt"){rep.from=$("#rf").value;rep.to=$("#rt").value;render()}
+ if(i.id==="imp"&&i.files[0]){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.accs&&d.tx){S=d;save();render()}}catch(_){alert("Invalid backup")}};r.readAsText(i.files[0])}});
+function dl(n,c,m){const a=document.createElement("a");a.href="data:"+m+";charset=utf-8,"+encodeURIComponent(c);a.download=n;a.click()}
+load();render();
+</script></body></html>
